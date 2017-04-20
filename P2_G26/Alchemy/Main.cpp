@@ -19,9 +19,24 @@ void printHelp() {
 	std::cout << "- Enter the word 'help' to show this tutorial." << std::endl;
 }
 
+void lectura(char m[]) {
+	int i=0;
+	std::ifstream fentrada("elements.dat");
+	while (fentrada.getline(m, 250)) {
+		while (*m + i != '=' || *m + i != '+') {
+			if (*m + i != '=' || *m + i != '+') {
+				std::cout << m << std::endl;
+				i++;
+			}
+		}
+	}
 
+}
 
 void main() {
+	char texto[250];
+	lectura(texto);
+
 	printHelp();
 	std::cin.clear(); // clears all error state flags
 					  // extracts characters from the input buffer and discards them
