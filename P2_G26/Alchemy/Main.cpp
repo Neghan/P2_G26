@@ -25,6 +25,18 @@ void printHelp() {
 
 std::unordered_map<std::pair<std::string, std::string>, std::string>elementosFinales;
 
+/* DEFINIR FUNCION HASH -------------------------------------------------------------------------------------/!\ */
+
+std::pair<std::string, std::string>GuardarKey(std::string l) {
+	std::pair<std::string, std::string>elementos;
+	int pos1 = l.find('+');
+	
+	elementos.first = l.substr(l.find('='), pos1);
+	elementos.second = l.substr(pos1, l.find('\n'));
+
+	return elementos;
+}
+
 std::string GuardarValue(std::string l) {
 	int primerElemento;
 	primerElemento = l.find_first_of(" ");
@@ -32,15 +44,6 @@ std::string GuardarValue(std::string l) {
 	return l;
 }
 
-std::pair<std::string,std::string> GuardarKey(std::string l) {
-	std::pair<std::string, std::string>elementos;
-	int pos1= l.find('+');
-	//elemento_final = elemento1 + elemento2 //elemento1 elemento2
-	elementos.first = l.substr(l.find('='), pos1);
-	elementos.second = l.substr(pos1, l.find('\n'));
-	
-	return elementos;
-}
 
 void leerArchivo(char lineas[]) {
 	
@@ -49,9 +52,7 @@ void leerArchivo(char lineas[]) {
 	while (!fentrada.eof()) {
 		fentrada.getline(lineas, 250);
 		if (strlen(lineas) != 0) {
-			
 			elementosFinales[GuardarKey(lineas)] = GuardarValue(lineas);
-			
 		}
 	}
 	fentrada.close();
