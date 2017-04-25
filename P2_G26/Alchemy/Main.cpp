@@ -4,6 +4,8 @@
 #include <windows.h>
 #include <algorithm>
 #include <cstdlib>
+#include<vector>
+#include<unordered_map>
 
 void printHelp() {
 	std::cout << "-----------" << std::endl;
@@ -19,23 +21,38 @@ void printHelp() {
 	std::cout << "- Enter the word 'help' to show this tutorial." << std::endl;
 }
 
-void lectura(char m[]) {
-	int i=0;
-	std::ifstream fentrada("elements.dat");
-	while (fentrada.getline(m, 250)) {
-		while (*m + i != '=' || *m + i != '+') {
-			if (*m + i != '=' || *m + i != '+') {
-				std::cout << m << std::endl;
-				i++;
-			}
-		}
-	}
-
+void GuardarKey(std::string &l) {
+	int primerElemento;
+	primerElemento = l.find_first_of(" ");
+	l = l.substr(0, primerElemento);
 }
 
+void MostrarKeys(char lineas[]) {
+	std::vector<std::string>elementosFinales(0);
+
+	std::ifstream fentrada("elements.dat");
+
+	while (!fentrada.eof()) {
+		fentrada.getline(lineas, 250);
+		if (strlen(lineas) != 0) {
+			std::string primerElemento = lineas;
+			GuardarKey(primerElemento);
+			elementosFinales.push_back(primerElemento);
+		}
+	}
+	fentrada.close();
+
+	for (int i = 0; i < elementosFinales.size(); ++i) {
+	std::cout << elementosFinales[i] << std::endl;
+	}
+}
+
+
+
+
 void main() {
-	char texto[250];
-	lectura(texto);
+	char lineas[250];
+	MostrarKeys(lineas);
 
 	printHelp();
 	std::cin.clear(); // clears all error state flags
