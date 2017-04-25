@@ -7,6 +7,8 @@
 #include<vector>
 #include<unordered_map>
 
+
+
 void printHelp() {
 	std::cout << "-----------" << std::endl;
 	std::cout << "ALCHEMY BOY" << std::endl;
@@ -21,30 +23,38 @@ void printHelp() {
 	std::cout << "- Enter the word 'help' to show this tutorial." << std::endl;
 }
 
-void GuardarKey(std::string &l) {
+std::unordered_map<std::pair<std::string, std::string>, std::string>elementosFinales;
+
+std::string GuardarValue(std::string l) {
 	int primerElemento;
 	primerElemento = l.find_first_of(" ");
 	l = l.substr(0, primerElemento);
+	return l;
 }
 
-void MostrarKeys(char lineas[]) {
-	std::vector<std::string>elementosFinales(0);
+std::pair<std::string,std::string> GuardarKey(std::string l) {
+	std::pair<std::string, std::string>elementos;
+	int pos1= l.find('+');
+	//elemento_final = elemento1 + elemento2 //elemento1 elemento2
+	elementos.first = l.substr(l.find('='), pos1);
+	elementos.second = l.substr(pos1, l.find('\n'));
+	
+	return elementos;
+}
 
+void leerArchivo(char lineas[]) {
+	
 	std::ifstream fentrada("elements.dat");
 
 	while (!fentrada.eof()) {
 		fentrada.getline(lineas, 250);
 		if (strlen(lineas) != 0) {
-			std::string primerElemento = lineas;
-			GuardarKey(primerElemento);
-			elementosFinales.push_back(primerElemento);
+			
+			elementosFinales[GuardarKey(lineas)] = GuardarValue(lineas);
+			
 		}
 	}
 	fentrada.close();
-
-	for (int i = 0; i < elementosFinales.size(); ++i) {
-	std::cout << elementosFinales[i] << std::endl;
-	}
 }
 
 
@@ -52,7 +62,7 @@ void MostrarKeys(char lineas[]) {
 
 void main() {
 	char lineas[250];
-	MostrarKeys(lineas);
+	leerArchivo(lineas);
 
 	printHelp();
 	std::cin.clear(); // clears all error state flags
