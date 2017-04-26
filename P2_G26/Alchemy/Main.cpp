@@ -6,16 +6,6 @@
 #include <cstdlib>
 #include<unordered_map>
 
-template<>
-struct std::hash<std::pair<std::string, std::string>> {
-	size_t operator()(const std::pair<std::string, std::string>&p)const
-	{
-		return((hash<std::string>()(p.first)
-			^ (hash<std::string>()(p.second) << 1)) >> 1);
-	}
-};
-
-
 void printHelp() {
 	std::cout << "-----------" << std::endl;
 	std::cout << "ALCHEMY BOY" << std::endl;
@@ -30,9 +20,16 @@ void printHelp() {
 	std::cout << "- Enter the word 'help' to show this tutorial." << std::endl;
 }
 
-std::unordered_map<std::pair<std::string, std::string>, std::string>elementosFinales;
+template<>
+struct std::hash<std::pair<std::string, std::string>> {
+	size_t operator()(const std::pair<std::string, std::string>&p)const
+	{
+		return((hash<std::string>()(p.first)
+			^ (hash<std::string>()(p.second) << 1)) >> 1);
+	}
+};
 
-/* DEFINIR FUNCION HASH -------------------------------------------------------------------------------------/!\ */
+std::unordered_map<std::pair<std::string, std::string>, std::string>elementosFinales;
 
 std::pair<std::string, std::string>GuardarKey(std::string l) {
 	
@@ -66,6 +63,12 @@ void leerArchivo(char lineas[]) {
 	fentrada.close();
 }
 
+void printElementos() {
+	for (auto i : elementosFinales)
+	{
+		std::cout << i.first.first << " " << i.first.second << " " << i.second << "\n";
+	}
+}
 
 
 
@@ -80,4 +83,5 @@ void main() {
 	auto url= "https://en.wikipedia.org/wiki/fire";
 	ShellExecuteA(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
 
+	printElementos();
 }
