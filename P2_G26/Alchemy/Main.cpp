@@ -4,9 +4,16 @@
 #include <windows.h>
 #include <algorithm>
 #include <cstdlib>
-#include<vector>
 #include<unordered_map>
 
+template<>
+struct std::hash<std::pair<std::string, std::string>> {
+	size_t operator()(const std::pair<std::string, std::string>&p)const
+	{
+		return((hash<std::string>()(p.first)
+			^ (hash<std::string>()(p.second) << 1)) >> 1);
+	}
+};
 
 
 void printHelp() {
@@ -28,6 +35,7 @@ std::unordered_map<std::pair<std::string, std::string>, std::string>elementosFin
 /* DEFINIR FUNCION HASH -------------------------------------------------------------------------------------/!\ */
 
 std::pair<std::string, std::string>GuardarKey(std::string l) {
+	
 	std::pair<std::string, std::string>elementos;
 	int pos1 = l.find('+');
 	
@@ -38,9 +46,11 @@ std::pair<std::string, std::string>GuardarKey(std::string l) {
 }
 
 std::string GuardarValue(std::string l) {
+	
 	int primerElemento;
 	primerElemento = l.find_first_of(" ");
 	l = l.substr(0, primerElemento);
+
 	return l;
 }
 
@@ -51,10 +61,8 @@ void leerArchivo(char lineas[]) {
 
 	while (!fentrada.eof()) {
 		fentrada.getline(lineas, 250);
-		if (strlen(lineas) != 0) {
-			elementosFinales[GuardarKey(lineas)] = GuardarValue(lineas);
-		}
-	}
+		elementosFinales[GuardarKey(lineas)] = GuardarValue(lineas);
+		} 
 	fentrada.close();
 }
 
@@ -62,16 +70,14 @@ void leerArchivo(char lineas[]) {
 
 
 void main() {
+	printHelp();
+
 	char lineas[250];
 	leerArchivo(lineas);
 
-	printHelp();
-	std::cin.clear(); // clears all error state flags
-					  // extracts characters from the input buffer and discards them
+	std::cin.clear(); 				  
 	std::cin.ignore(std::cin.rdbuf()->in_avail());
-
 	auto url= "https://en.wikipedia.org/wiki/fire";
-	
 	ShellExecuteA(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
 
 }
