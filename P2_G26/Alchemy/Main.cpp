@@ -17,24 +17,24 @@ struct std::hash<std::pair<std::string, std::string>> {
 
 std::unordered_map<std::pair<std::string, std::string>, std::string>elementosFinales;
 
+
 //GUARDA EN UN PAIR LOS ELEMENTOS QUE SE SUMADOS GENERARAN EL VALUE UN ELEMENTO EN FIRST Y OTRO EN SECOND
 std::pair<std::string, std::string>GuardarKey(std::string l) {
 
-	std::string aux;
+	
 	std::pair<std::string, std::string>elementos;
-
-	aux = l.substr(l.find("=") + 2, l.find("+"));
-	aux = l.substr(l.find("+") + 2, l.find("\n") - 1);
 	
-	
+	elementos.first  = l.substr(l.find("=") + 2, l.find_first_of(" ") - 1);
+	elementos.second  = l.substr(l.find("+") + 2, l.find_first_of("\n") - 1);
 	
 	return elementos;
 }
 
 //GUARDA COMO VALUE EL ELEMENTO RESULTANTE DE LA SUMA DE DOS ELEMENTOS
 std::string GuardarValue(std::string l) {
-	l = l.substr(0, l.find_first_of(" "));
-	return l;
+	std::string aux;
+	aux = l.substr(0, l.find_first_of(" "));
+	return aux;
 }
 
 //LEE EL ARCHIVO
@@ -51,9 +51,9 @@ void leerArchivo(char lineas[]) {
 
 //PRINTEAR ELEMENTOS 
 void printElementos() {
-	for (auto i : elementosFinales)
+	for (auto &i : elementosFinales)
 	{
-		std::cout << i.first.first << "/////" << i.first.second << "/////" << i.second <<std::endl;
+		std::cout << i.first.first << " " << i.first.second << " " << i.second <<std::endl;
 	}
 }
 
