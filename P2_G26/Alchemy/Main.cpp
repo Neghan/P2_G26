@@ -15,37 +15,38 @@ struct std::hash<std::pair<std::string, std::string>> {
 	}
 };
 
+//MAP
 std::unordered_map<std::pair<std::string, std::string>, std::string>elementosFinales;
 
+//GUARDA COMO VALUE EL ELEMENTO RESULTANTE DE LA SUMA DE DOS ELEMENTOS
+std::string GuardarValue(std::string l) {
+	l = l.substr(0, l.find_first_of(" "));
+	return l;
+}
 
-//GUARDA EN UN PAIR LOS ELEMENTOS QUE SE SUMADOS GENERARAN EL VALUE UN ELEMENTO EN FIRST Y OTRO EN SECOND
+//GUARDA EN UN PAIR LOS ELEMENTOS QUE SUMADOS GENERARAN EL VALUE, UN ELEMENTO EN FIRST Y OTRO EN SECOND
 std::pair<std::string, std::string>GuardarKey(std::string l) {
 
-	
 	std::pair<std::string, std::string>elementos;
-	
-	elementos.first  = l.substr(l.find("=") + 2, l.find_first_of(" ") - 1);
-	elementos.second  = l.substr(l.find("+") + 2, l.find_first_of("\n") - 1);
+	auto pos = l.find("+");
+
+	elementos.first = l.substr(l.find("=") + 2, pos - 1);
+	elementos.first = elementos.first.substr(0, elementos.first.find("+") - 1);
+
+	elementos.second  = l.substr(pos + 2, l.find("\n") - 1);
 	
 	return elementos;
 }
 
-//GUARDA COMO VALUE EL ELEMENTO RESULTANTE DE LA SUMA DE DOS ELEMENTOS
-std::string GuardarValue(std::string l) {
-	std::string aux;
-	aux = l.substr(0, l.find_first_of(" "));
-	return aux;
-}
-
 //LEE EL ARCHIVO
 void leerArchivo(char lineas[]) {
-	
+
 	std::ifstream fentrada("elements.dat");
 
 	while (!fentrada.eof()) {
-		fentrada.getline(lineas, 1280);
+		fentrada.getline(lineas, 300);
 		elementosFinales[GuardarKey(lineas)] = GuardarValue(lineas);
-		} 
+	}
 	fentrada.close();
 }
 
@@ -53,7 +54,7 @@ void leerArchivo(char lineas[]) {
 void printElementos() {
 	for (auto &i : elementosFinales)
 	{
-		std::cout << i.first.first << " " << i.first.second << " " << i.second <<std::endl;
+		std::cout << i.first.first << "//" << i.first.second << "//" << i.second <<std::endl;
 	}
 }
 
@@ -75,13 +76,14 @@ void main() {
 	std::cout << "-Enter the word 'help' to show this tutorial." << std::endl;*/
 	
 
-	char lineas[1280];
+	char lineas[300];
 	leerArchivo(lineas);
 
 	printElementos();
 
-	//std::cin.clear();
-	//std::cin.ignore(std::cin.rdbuf()->in_avail());
-	//auto url = "https://en.wikipedia.org/wiki/fire";
-	//ShellExecuteA(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
+	/*std::cin.clear();
+	std::cin.ignore(std::cin.rdbuf()->in_avail());
+	auto url = "https://en.wikipedia.org/wiki/fire";
+	ShellExecuteA(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);*/
+	
 }
