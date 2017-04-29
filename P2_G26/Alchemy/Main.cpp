@@ -54,7 +54,7 @@ void leerArchivo(char lineas[]) {
 void printElementos() {
 	for (auto &i : elementosFinales)
 	{
-		std::cout << i.first.first << "//" << i.first.second << "//" << i.second <<std::endl;
+		std::cout << "Elemento 1: " << i.first.first << " " << "Elemento 2: " << i.first.second << " " << "Elemento resultante: " << i.second <<std::endl;
 	}
 }
 
