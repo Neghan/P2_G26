@@ -20,10 +20,13 @@ std::unordered_map<std::pair<std::string, std::string>, std::string>elementosFin
 //GUARDA EN UN PAIR LOS ELEMENTOS QUE SE SUMADOS GENERARAN EL VALUE UN ELEMENTO EN FIRST Y OTRO EN SECOND
 std::pair<std::string, std::string>GuardarKey(std::string l) {
 
+	std::string aux;
 	std::pair<std::string, std::string>elementos;
 
-	elementos.first = l.substr(l.find("=") + 2, l.find("+"));
-	elementos.second = l.substr(l.find("+") + 2, l.find("\n") - 1);
+	aux = l.substr(l.find("=") + 2, l.find("+"));
+	aux = l.substr(l.find("+") + 2, l.find("\n") - 1);
+	
+	
 	
 	return elementos;
 }
