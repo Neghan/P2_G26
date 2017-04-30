@@ -77,25 +77,53 @@ void printHelp() {
 	std::cout << "-Enter the word 'help' to show this tutorial." << std::endl;
 };
 
-void addElement() {};
+//1 2 = OTRO ELEMENTO
+void combineElements() {
 
-void addBasics() {};
+};
 
-void deleteElement() {};
+//add 1 SE COPIA ESE ELEMENTO EN LA LISTA
+void addElement() {
+	
+};
 
+//AÑADE LOS 4 PRIMEROS ELEMENTOS
+//"Air", "Earth", "Fire", "Water"
+void addBasics() {
+	elementos.push_back("Air");
+	elementos.push_back("Earth");
+	elementos.push_back("Fire");
+	elementos.push_back("Water");
+};
+
+//ELIMINA ELEMENTO SELECCIONADO
+void deleteElement(std::vector<std::string> myVector,int myIndex) {
+	myVector.erase(myVector.begin() + myIndex);
+};
+
+//ABRE WIKIPEDIA SOBRE ELEMENTO SELECCIONADO
 void info() {
 	auto url = "https://en.wikipedia.org/wiki/" /*+ */;
 	ShellExecuteA(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
 };
 
+//LOS ORDENA ALFABETICAMENTE
 void sortElements() {
 	std::sort(elementos.begin(), elementos.end());
 };
 
+//ELIMINA ELEMENTOS REPETIDOS
 void cleanRepeatedElements() {
-
+	for (auto it = 0; it < elementos.size() - 1; ++it) {
+		for (auto it = 1; it < elementos.size() - 1; ++it) {
+			if (elementos[0] == elementos[1]) {
+				elementos.erase(elementos.begin() + it);
+			}
+		}
+	}
 };
 
+//LEE EL INPUT DEL JUGADOR
 void leerInputJugador() {
 	std::string aux;
 	std::cin >> aux;
@@ -103,41 +131,52 @@ void leerInputJugador() {
 	std::cin.clear();
 	std::cin.ignore(std::cin.rdbuf()->in_avail());
 
-	for (int i = 0; i < elementos.size(); ++i) {
-	if (aux == ("add " + char(i) )  ) {
-		addElement();
+	bool canCombine = false;
+		
+		combineElements();
+
+		for (int i = 0; i < elementos.size() - 1; ++i) {
+
+			if (aux == "add " + elementos[i]) {
+				addElement();
+			}
+
+			if (aux == "delete " + elementos[i]) {
+				deleteElement(elementos,i);
+			}
+
+			if (aux == "info " + elementos[i]) {
+				info();
+			}
+
+			if (aux.substr(0, aux.find_first_of(" ")) == elementos[i]) {
+				canCombine = true;
+			}
 		}
-	}
-	
+		for (int i = 0; i < elementos.size() - 1; ++i) {
+			if (canCombine && aux.substr(aux.find_first_of(" "), aux.find("\n") - 1) == elementos[i]) {
+				combineElements();
+			}
+		}
+		
+		if(aux == "add basics"){
+			addBasics();
+		}
 
-	if(aux == "add basics"){
-		addBasics();
-	}
+		if (aux == "sort") {
+			sortElements();
+		}
 
-	if (aux == "delete") {
-		deleteElement();
-	}
+		if (aux == "clean") {
+			cleanRepeatedElements();
+		}
 
-	if (aux == "info "/* + numero*/) {
-		info();
-	}
-
-	if (aux == "sort") {
-		sortElements();
-	}
-
-	if (aux == "clean") {
-		cleanRepeatedElements();
-	}
-
-	if (aux == "help") {
-		printHelp();
-	}
+		if (aux == "help") {
+			printHelp();
+		}
 };
 
-void combineElements() {
-	
-};
+
 
 void main() {
 
