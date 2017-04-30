@@ -121,10 +121,10 @@ void sortElements() {
 
 //ELIMINA ELEMENTOS REPETIDOS
 void cleanRepeatedElements() {
-	for (auto it = 0; it < elementos.size() - 1; ++it) {
-		for (auto it = 1; it < elementos.size() - 1; ++it) {
-			if (elementos[0] == elementos[1]) {
-				elementos.erase(elementos.begin() + it);
+	for (int i = 0; i < elementos.size() - 1; ++i) {
+		for (int j = 1; j < elementos.size() - 1; ++j) {
+			if (elementos[i] == elementos[j]) {
+				elementos.erase(elementos.begin() + i);
 			}
 		}
 	}
