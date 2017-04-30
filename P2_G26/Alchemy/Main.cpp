@@ -7,6 +7,7 @@
 #include<unordered_map>
 #include<stdlib.h>
 
+//HASH
 template<>
 struct std::hash<std::pair<std::string, std::string>> {
 	size_t operator()(const std::pair<std::string, std::string>&p)const
@@ -83,14 +84,14 @@ void combineElements(int myIndex1, int myIndex2) {
 	for (auto &it : elementosFinales) {
 		if (elementos[myIndex1] == it.first.first && 
 			elementos[myIndex2] == it.first.second) {
-			elementos[elementos.size() - 1] = it.second;
+			elementos.push_back(it.second);
 		}
 	}
 };
 
 //add 1 SE COPIA ESE ELEMENTO EN LA LISTA
-void addElement() {
-	
+void addElement(int index) {
+	elementos.push_back(elementos[index]);
 };
 
 //AÑADE LOS 4 PRIMEROS ELEMENTOS
@@ -142,10 +143,8 @@ void leerInputJugador() {
 
 	bool canCombine = false;
 		
-		
-
 		if (aux == "add " + index2) {
-			addElement();
+			addElement(std::stoi(index2));
 		}
 
 		if (aux == "delete " + index2) {
@@ -183,9 +182,5 @@ void main() {
 
 	char lineas[300];
 	leerArchivo(lineas);
-
 	printHelp();
-	leerInputJugador();
-	printElementos();
-
 };
