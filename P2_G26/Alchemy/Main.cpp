@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include<unordered_map>
+#include<stdlib.h>
 
 template<>
 struct std::hash<std::pair<std::string, std::string>> {
@@ -31,15 +32,15 @@ std::string GuardarValue(std::string l) {
 //GUARDA EN UN PAIR LOS ELEMENTOS QUE SUMADOS GENERARAN EL VALUE, UN ELEMENTO EN FIRST Y OTRO EN SECOND
 std::pair<std::string, std::string>GuardarKey(std::string l) {
 
-	std::pair<std::string, std::string>keys;
+	std::pair<std::string, std::string>key;
 	auto pos = l.find("+");
 
-	keys.first = l.substr(l.find("=") + 2, pos - 1);
-	keys.first = keys.first.substr(0, keys.first.find("+") - 1);
+	key.first = l.substr(l.find("=") + 2, pos - 1);
+	key.first = key.first.substr(0, key.first.find("+") - 1);
 
-	keys.second  = l.substr(pos + 2, l.find("\n") - 1);
+	key.second  = l.substr(pos + 2, l.find("\n") - 1);
 
-	return keys;
+	return key;
 };
 
 //LEE EL ARCHIVO
@@ -78,8 +79,13 @@ void printHelp() {
 };
 
 //1 2 = OTRO ELEMENTO
-void combineElements() {
-
+void combineElements(int myIndex1, int myIndex2) {
+	for (auto &it : elementosFinales) {
+		if (elementos[myIndex1] == it.first.first && 
+			elementos[myIndex2] == it.first.second) {
+			elementos[elementos.size() - 1] = it.second;
+		}
+	}
 };
 
 //add 1 SE COPIA ESE ELEMENTO EN LA LISTA
@@ -97,8 +103,8 @@ void addBasics() {
 };
 
 //ELIMINA ELEMENTO SELECCIONADO
-void deleteElement(std::vector<std::string> myVector,int myIndex) {
-	myVector.erase(myVector.begin() + myIndex);
+void deleteElement(int myIndex) {
+	elementos.erase(elementos.begin() + myIndex);
 };
 
 //ABRE WIKIPEDIA SOBRE ELEMENTO SELECCIONADO
@@ -128,37 +134,32 @@ void leerInputJugador() {
 	std::string aux;
 	std::cin >> aux;
 
+	auto index1 = aux.substr(0, aux.find_first_of(" "));
+	auto index2 = aux.substr(aux.find_first_of(" "), aux.find("\n") - 1);
+
 	std::cin.clear();
 	std::cin.ignore(std::cin.rdbuf()->in_avail());
 
 	bool canCombine = false;
 		
-		combineElements();
-
-		for (int i = 0; i < elementos.size() - 1; ++i) {
-
-			if (aux == "add " + elementos[i]) {
-				addElement();
-			}
-
-			if (aux == "delete " + elementos[i]) {
-				deleteElement(elementos,i);
-			}
-
-			if (aux == "info " + elementos[i]) {
-				info();
-			}
-
-			if (aux.substr(0, aux.find_first_of(" ")) == elementos[i]) {
-				canCombine = true;
-			}
-		}
-		for (int i = 0; i < elementos.size() - 1; ++i) {
-			if (canCombine && aux.substr(aux.find_first_of(" "), aux.find("\n") - 1) == elementos[i]) {
-				combineElements();
-			}
-		}
 		
+
+		if (aux == "add " + index2) {
+			addElement();
+		}
+
+		if (aux == "delete " + index2) {
+			deleteElement(std::stoi(index1));
+		}
+
+		if (aux == "info " + index2) {
+			info();
+		}
+	
+		if (aux == index1 + " " + index2){
+			combineElements(std::stoi(index1),std::stoi(index2));
+		}
+
 		if(aux == "add basics"){
 			addBasics();
 		}
