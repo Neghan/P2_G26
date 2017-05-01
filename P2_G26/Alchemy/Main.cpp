@@ -48,19 +48,19 @@ std::pair<std::string, std::string>GuardarKey(std::string l) {
 void leerArchivo(char lineas[]) {
 
 	std::ifstream fentrada("elements.dat");
-	/*	if () {
-		
+
+	if (fentrada.is_open) {
+		while (!fentrada.eof()) {
+			fentrada.getline(lineas, 300);
+			elementosFinales[GuardarKey(lineas)] = GuardarValue(lineas);
+		}
+		fentrada.close();
+	}
+	else {
 		std::cout << "Cannot read combination of elements from file elements.dat." << std::endl;
 		std::cout << "Check that it's placed in the same directory as Alchemy.exe!" << std::endl;
 		system("pause");
-	}*/
-
-
-	while (!fentrada.eof()) {
-		fentrada.getline(lineas, 300);
-		elementosFinales[GuardarKey(lineas)] = GuardarValue(lineas);
 	}
-	fentrada.close();
 };
 
 //PRINTEAR ELEMENTOS 
@@ -86,20 +86,25 @@ void printHelp() {
 	std::cout << "- Enter the word 'sort' to sort by alphabetical order the elements in the list" << std::endl;
 	std::cout << "- Enter the word 'clean' to delete all the instances of repeated elements." << std::endl;
 	std::cout << "- Enter the word 'help' to show this tutorial." << std::endl;
+	std::cout << std::endl;
 };
 
 //1 2 = OTRO ELEMENTO
 void combineElements(int myIndex1, int myIndex2) {
 	for (auto &it : elementosFinales) {
-		if (elementos[myIndex1] == it.first.first && 
-			elementos[myIndex2] == it.first.second) {
-			elementos.push_back(it.second);
-			puntuacion++;
-			std::cout << "New element found: " << elementos[elementos.size()] << std::endl;
+		if (elementos[myIndex1] == it.first.first) {
+			for (auto &it : elementosFinales) {
+				if (elementos[myIndex2] == it.first.second) {
+					elementos.push_back(it.second);
+					puntuacion++;
+					std::cout << "New element found: " << elementos[elementos.size()] << std::endl;
+				}
+				else {
+					std::cout << "Combination failure, try again!" << std::endl;
+				}
+			}
 		}
-		else {
-			std::cout << "Combination failure, try again!" << std::endl;
-		}
+		
 	}
 };
 
@@ -202,4 +207,5 @@ void main() {
 	printHelp();
 	printElementos();
 	leerInputJugador();
+
 };
