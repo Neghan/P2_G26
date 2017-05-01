@@ -93,26 +93,19 @@ void printHelp() {
 
 //1 2 = OTRO ELEMENTO
 void combineElements(int myIndex1, int myIndex2) {
-	for (auto &it : elementosFinales) {
-		if (elementos[myIndex1] == it.first.first) {
-			for (auto &it : elementosFinales) {
-				if (elementos[myIndex2] == it.first.second) {
-					elementos.push_back(it.second);
-					puntuacion++;
-					std::cout << "New element found: " << elementos[elementos.size()] << std::endl;
-				}
-				else {
-					std::cout << "Combination failure, try again!" << std::endl;
-				}
-			}
-		}
-		
+	std::pair<std::string, std::string>aux= {elementos[myIndex1], elementos[myIndex2]};
+	auto t = elementosFinales.find(aux);
+	if (t != elementosFinales.end()) {
+		std::string value = t->second;
+	}
+	else {
+		std::cout << "Combination failure, try again" << std::endl;
 	}
 };
 
 //add 1 SE COPIA ESE ELEMENTO EN LA LISTA
 void addElement(int index) {
-	if (index < elementos.size()) {
+	if (index < elementos.size() && index != 0) {
 		elementos.push_back(elementos[index]);
 	}
 	else {
@@ -135,8 +128,9 @@ void deleteElement(int myIndex) {
 };
 
 //ABRE WIKIPEDIA SOBRE ELEMENTO SELECCIONADO
-void info() {
-	auto url = "https://en.wikipedia.org/wiki/" /*+ */;
+void info(int index) {
+	auto url = "https://en.wikipedia.org/wiki/";
+	elementos[index];
 	ShellExecuteA(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
 };
 
@@ -167,36 +161,36 @@ void leerInputJugador() {
 	std::cin.clear();
 	std::cin.ignore(std::cin.rdbuf()->in_avail());
 		
-		if (aux == "add " + index2) {
-			addElement(std::stoi(index2));
+		if (std::atoi(aux.c_str())!=0) {
+			combineElements(std::atoi(index1.c_str()), std::atoi(index2.c_str()));
 		}
 
-		else if (aux == "delete " + index2) {
-			deleteElement(std::stoi(index1));
+		if (index1 == "delete" && std::atoi(index2.c_str()) != 0) {
+			deleteElement(std::atoi(index2.c_str()));
 		}
 
-		else if (aux == "info " + index2) {
-			info();
+		if (index1 == "info" && std::atoi(index2.c_str()) != 0) {
+			info(std::atoi(index2.c_str()));
 		}
 	
-		else if (aux == index1 + " " + index2){
-			combineElements(std::stoi(index1),std::stoi(index2));
-		}
 
-		else if(aux == "add basics"){
+		if(aux == "add basics"){
 			addBasics();
 		}
 
-		else if (aux == "sort") {
+		if (aux == "sort") {
 			sortElements();
 		}
 
-		else if (aux == "clean") {
+		if (aux == "clean") {
 			cleanRepeatedElements();
 		}
 
-		else if (aux == "help") {
+		if (aux == "help") {
 			printHelp();
+		}
+		if (index1 == index1 && index1 != "0" && index2 != "0") {
+			combineElements(std::stoi(index1), std::stoi(index2));
 		}
 };
 
