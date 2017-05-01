@@ -49,18 +49,19 @@ void leerArchivo(char lineas[]) {
 
 	std::ifstream fentrada("elements.dat");
 
-	if (fentrada.is_open) {
 		while (!fentrada.eof()) {
 			fentrada.getline(lineas, 300);
 			elementosFinales[GuardarKey(lineas)] = GuardarValue(lineas);
 		}
 		fentrada.close();
-	}
-	else {
-		std::cout << "Cannot read combination of elements from file elements.dat." << std::endl;
-		std::cout << "Check that it's placed in the same directory as Alchemy.exe!" << std::endl;
-		system("pause");
-	}
+	
+	/*
+	std::cout << "Cannot read combination of elements from file elements.dat." << std::endl;
+	std::cout << "Check that it's placed in the same directory as Alchemy.exe!" << std::endl;
+	system("pause");
+	*/
+		
+	
 };
 
 //PRINTEAR ELEMENTOS 
@@ -201,11 +202,9 @@ void leerInputJugador() {
 
 
 void main() {
-
 	char lineas[300];
 	leerArchivo(lineas);
 	printHelp();
 	printElementos();
 	leerInputJugador();
-
 };
