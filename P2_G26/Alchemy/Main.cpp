@@ -113,7 +113,7 @@ void combineElements(int myIndex1, int myIndex2) {
 
 //add 1 SE COPIA ESE ELEMENTO EN LA LISTA 
 void addElement(int index) {
-	if (index < elementos.size() && index != 0) {
+	if (index <= elementos.size() && index != 0) {
 		elementos.push_back(elementos[index - 1]);
 	}
 	else {
