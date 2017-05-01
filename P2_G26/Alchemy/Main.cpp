@@ -154,8 +154,8 @@ void leerInputJugador() {
 	std::string aux;
 	std::cin >> aux;
 
-	auto index1 = aux.substr(0, aux.find_first_of(" ") - 1);
-	auto index2 = index1.substr(0, index1.find("\n") - 1);
+	auto index1 = aux.substr(0, aux.find_first_of(" "));
+	auto index2 = aux.substr(aux.find_first_of(" ") + 1, aux.find("\n"));
 
 	std::cin.clear();
 	std::cin.ignore(std::cin.rdbuf()->in_avail());
