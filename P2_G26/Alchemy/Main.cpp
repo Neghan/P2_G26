@@ -205,6 +205,9 @@ void main() {
 	char lineas[300];
 	leerArchivo(lineas);
 	printHelp();
-	printElementos();
-	leerInputJugador();
+
+	do {
+		printElementos();
+		leerInputJugador();
+	} while (true);
 };
