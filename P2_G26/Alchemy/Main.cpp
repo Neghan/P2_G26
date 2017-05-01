@@ -72,6 +72,7 @@ void printElementos() {
 	{
 		std::cout << i + 1 << ":" << elementos[i] << std::endl;
 	}
+	std::cout << std::endl;
 };
 
 void printHelp() {
@@ -111,7 +112,7 @@ void combineElements(int myIndex1, int myIndex2) {
 
 //add 1 SE COPIA ESE ELEMENTO EN LA LISTA
 void addElement(int index) {
-	if (index <= elementos.size()) {
+	if (index < elementos.size()) {
 		elementos.push_back(elementos[index]);
 	}
 	else {
@@ -170,31 +171,31 @@ void leerInputJugador() {
 			addElement(std::stoi(index2));
 		}
 
-		if (aux == "delete " + index2) {
+		else if (aux == "delete " + index2) {
 			deleteElement(std::stoi(index1));
 		}
 
-		if (aux == "info " + index2) {
+		else if (aux == "info " + index2) {
 			info();
 		}
 	
-		if (aux == index1 + " " + index2){
+		else if (aux == index1 + " " + index2){
 			combineElements(std::stoi(index1),std::stoi(index2));
 		}
 
-		if(aux == "add basics"){
+		else if(aux == "add basics"){
 			addBasics();
 		}
 
-		if (aux == "sort") {
+		else if (aux == "sort") {
 			sortElements();
 		}
 
-		if (aux == "clean") {
+		else if (aux == "clean") {
 			cleanRepeatedElements();
 		}
 
-		if (aux == "help") {
+		else if (aux == "help") {
 			printHelp();
 		}
 };
@@ -205,9 +206,10 @@ void main() {
 	char lineas[300];
 	leerArchivo(lineas);
 	printHelp();
-
-	do {
-		printElementos();
+	//printElementos();
+	
+	//do {
 		leerInputJugador();
-	} while (true);
+		printElementos();
+	//} while (true);
 };
