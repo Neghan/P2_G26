@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include<unordered_map>
 #include<stdlib.h>
-
+#include<map>
 //HASH
 template<>
 struct std::hash<std::pair<std::string, std::string>> {
@@ -110,7 +110,7 @@ void combineElements(int myIndex1, int myIndex2) {
 	}
 };
 
-//add 1 SE COPIA ESE ELEMENTO EN LA LISTA ---------------------------------------------/!\------!!!
+//add 1 SE COPIA ESE ELEMENTO EN LA LISTA 
 void addElement(int index) {
 	if (index < elementos.size() && index != 0) {
 		elementos.push_back(elementos[index - 1]);
@@ -148,13 +148,7 @@ void sortElements() {
 
 //ELIMINA ELEMENTOS REPETIDOS ---------------------------------------------/!\------!!!
 void cleanRepeatedElements() {
-	for (int i = 0; i < elementos.size(); ++i) {
-		for (int j = 1; j < elementos.size() - 1; ++j) {
-			if (elementos[i] == elementos[j]) {
-				elementos.erase(elementos.begin() + i);
-			}
-		}
-	}
+	std::map<std::string,int>myMap;
 };
 
 //LEE EL INPUT DEL JUGADOR
@@ -171,7 +165,7 @@ void leerInputJugador() {
 		}
 
 		//ADD ELEMENT
-		if (index1 == "aux" && std::atoi(index2.c_str()) != 0) {
+		if (index1 == "add" && std::atoi(index2.c_str()) != 0) {
 			addElement(std::atoi(index2.c_str()));
 		}
 
