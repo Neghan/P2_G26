@@ -6,7 +6,8 @@
 #include <cstdlib>
 #include<unordered_map>
 #include<stdlib.h>
-#include<map>
+#include<set>
+
 //HASH
 template<>
 struct std::hash<std::pair<std::string, std::string>> {
@@ -98,7 +99,7 @@ void combineElements(int myIndex1, int myIndex2) {
 	std::pair<std::string, std::string>aux= {elementos[myIndex1], elementos[myIndex2]};
 	auto t = elementosFinales.find(aux);
 
-	if (t != elementosFinales.end()) {
+	if (!(myIndex1 > elementos.size() || myIndex2 > elementos.size())) {
 		std::string value = t->second;
 		elementos.erase(elementos.begin() + myIndex1 - 1);
 		elementos.erase(elementos.begin() + myIndex2 - 1);
@@ -134,11 +135,14 @@ void deleteElement(int myIndex) {
 	elementos.erase(elementos.begin() + myIndex - 1);
 };
 
-//ABRE WIKIPEDIA SOBRE ELEMENTO SELECCIONADO---------------------------------------------/!\------!!!
+//ABRE WIKIPEDIA SOBRE ELEMENTO SELECCIONADO
 void info(int index) {
-	auto url = "https://en.wikipedia.org/wiki/";
-	elementos[index];
-	ShellExecuteA(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
+	std::string url = "https://en.wikipedia.org/wiki/";
+	std::string direccion = elementos[index - 1];
+	
+	std::string  urlDef = url + direccion;
+	
+	ShellExecuteA(nullptr, "open", urlDef.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 };
 
 //LOS ORDENA ALFABETICAMENTE
@@ -146,9 +150,18 @@ void sortElements() {
 	std::sort(elementos.begin(), elementos.end());
 };
 
-//ELIMINA ELEMENTOS REPETIDOS ---------------------------------------------/!\------!!!
+//ELIMINA ELEMENTOS REPETIDOS 
 void cleanRepeatedElements() {
-	std::map<std::string,int>myMap;
+	std::set<std::string>myMap;
+	for (auto it = elementos.begin(); it != elementos.end() - 1; ++it) {
+			myMap.insert(*it);
+	}
+
+	elementos.erase(elementos.begin(), elementos.end());
+
+	for (auto it = myMap.begin(); it != myMap.end(); ++it) {
+		elementos.push_back(*it);
+	}
 };
 
 //LEE EL INPUT DEL JUGADOR
@@ -156,6 +169,7 @@ void leerInputJugador() {
 	std::string aux;
 	std::getline(std::cin,aux);
 
+	//idex1 = add , index2= 1
 	auto index1 = aux.substr(0, aux.find_first_of(" "));
 	auto index2 = aux.substr(aux.find_first_of(" ") + 1, aux.find("\n"));
 		
@@ -210,8 +224,11 @@ void main() {
 	leerArchivo(lineas);
 	printHelp();
 	printElementos();
+	
 	do {
 		leerInputJugador();
+		system("cls");
 		printElementos();
+
 	} while (true);
 };
