@@ -21,6 +21,7 @@ struct std::hash<std::pair<std::string, std::string>> {
 std::unordered_map<std::pair<std::string, std::string>, std::string>elementosFinales;
 //VECTOR
 std::vector<std::string>elementos({"Air","Earth","Fire","Water"});
+
 //SCORE
 int puntuacion = 0;
 
@@ -99,8 +100,8 @@ void combineElements(int myIndex1, int myIndex2) {
 
 	if (t != elementosFinales.end()) {
 		std::string value = t->second;
-		elementos.erase(elementos.begin() + myIndex1);
-		elementos.erase(elementos.begin() + myIndex2);
+		elementos.erase(elementos.begin() + myIndex1 - 1);
+		elementos.erase(elementos.begin() + myIndex2 - 1);
 		elementos.push_back(value);
 		puntuacion++;
 	}
@@ -109,10 +110,10 @@ void combineElements(int myIndex1, int myIndex2) {
 	}
 };
 
-//add 1 SE COPIA ESE ELEMENTO EN LA LISTA
+//add 1 SE COPIA ESE ELEMENTO EN LA LISTA ---------------------------------------------/!\------!!!
 void addElement(int index) {
 	if (index < elementos.size() && index != 0) {
-		elementos.push_back(elementos[index]);
+		elementos.push_back(elementos[index - 1]);
 	}
 	else {
 		std::cout << "You don't have this element!" << std::endl;
@@ -148,9 +149,9 @@ void sortElements() {
 //ELIMINA ELEMENTOS REPETIDOS ---------------------------------------------/!\------!!!
 void cleanRepeatedElements() {
 	for (int i = 0; i < elementos.size(); ++i) {
-		for (int j = 1; j < elementos.size(); ++j) {
+		for (int j = 1; j < elementos.size() - 1; ++j) {
 			if (elementos[i] == elementos[j]) {
-				elementos.erase(elementos.begin() + j);
+				elementos.erase(elementos.begin() + i);
 			}
 		}
 	}
@@ -159,13 +160,10 @@ void cleanRepeatedElements() {
 //LEE EL INPUT DEL JUGADOR
 void leerInputJugador() {
 	std::string aux;
-	std::cin >> aux;
+	std::getline(std::cin,aux);
 
 	auto index1 = aux.substr(0, aux.find_first_of(" "));
 	auto index2 = aux.substr(aux.find_first_of(" ") + 1, aux.find("\n"));
-
-	std::cin.clear();
-	std::cin.ignore(std::cin.rdbuf()->in_avail());
 		
 		//COMBINE ELEMENTS
 		if (std::atoi(aux.c_str())!=0) {
@@ -206,6 +204,9 @@ void leerInputJugador() {
 		if (aux == "help") {
 			printHelp();
 		}
+
+		std::cin.clear();
+		std::cin.ignore(std::cin.rdbuf()->in_avail());
 };
 
 
@@ -215,7 +216,6 @@ void main() {
 	leerArchivo(lineas);
 	printHelp();
 	printElementos();
-	
 	do {
 		leerInputJugador();
 		printElementos();
