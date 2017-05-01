@@ -93,10 +93,16 @@ void printHelp() {
 
 //1 2 = OTRO ELEMENTO
 void combineElements(int myIndex1, int myIndex2) {
+
 	std::pair<std::string, std::string>aux= {elementos[myIndex1], elementos[myIndex2]};
 	auto t = elementosFinales.find(aux);
+
 	if (t != elementosFinales.end()) {
 		std::string value = t->second;
+		elementos.erase(elementos.begin() + myIndex1);
+		elementos.erase(elementos.begin() + myIndex2);
+		elementos.push_back(value);
+		puntuacion++;
 	}
 	else {
 		std::cout << "Combination failure, try again" << std::endl;
@@ -124,10 +130,10 @@ void addBasics() {
 
 //ELIMINA ELEMENTO SELECCIONADO
 void deleteElement(int myIndex) {
-	elementos.erase(elementos.begin() + myIndex);
+	elementos.erase(elementos.begin() + myIndex - 1);
 };
 
-//ABRE WIKIPEDIA SOBRE ELEMENTO SELECCIONADO
+//ABRE WIKIPEDIA SOBRE ELEMENTO SELECCIONADO---------------------------------------------/!\------!!!
 void info(int index) {
 	auto url = "https://en.wikipedia.org/wiki/";
 	elementos[index];
@@ -139,12 +145,12 @@ void sortElements() {
 	std::sort(elementos.begin(), elementos.end());
 };
 
-//ELIMINA ELEMENTOS REPETIDOS
+//ELIMINA ELEMENTOS REPETIDOS ---------------------------------------------/!\------!!!
 void cleanRepeatedElements() {
-	for (int i = 0; i < elementos.size() - 1; ++i) {
-		for (int j = 1; j < elementos.size() - 1; ++j) {
+	for (int i = 0; i < elementos.size(); ++i) {
+		for (int j = 1; j < elementos.size(); ++j) {
 			if (elementos[i] == elementos[j]) {
-				elementos.erase(elementos.begin() + i);
+				elementos.erase(elementos.begin() + j);
 			}
 		}
 	}
@@ -161,36 +167,44 @@ void leerInputJugador() {
 	std::cin.clear();
 	std::cin.ignore(std::cin.rdbuf()->in_avail());
 		
+		//COMBINE ELEMENTS
 		if (std::atoi(aux.c_str())!=0) {
 			combineElements(std::atoi(index1.c_str()), std::atoi(index2.c_str()));
 		}
 
+		//ADD ELEMENT
+		if (index1 == "aux" && std::atoi(index2.c_str()) != 0) {
+			addElement(std::atoi(index2.c_str()));
+		}
+
+		//DELETE ELEMENT
 		if (index1 == "delete" && std::atoi(index2.c_str()) != 0) {
 			deleteElement(std::atoi(index2.c_str()));
 		}
 
+		//GIVE INFO ABOUT ELEMENT
 		if (index1 == "info" && std::atoi(index2.c_str()) != 0) {
 			info(std::atoi(index2.c_str()));
 		}
 	
-
+		//ADDS BASIC ELEMENTS
 		if(aux == "add basics"){
 			addBasics();
 		}
 
+		//SORTS ELEMENTS IN ALPHABETICAL ORDER
 		if (aux == "sort") {
 			sortElements();
 		}
 
+		//REMOVES REPEATED ELEMENTS
 		if (aux == "clean") {
 			cleanRepeatedElements();
 		}
 
+		//PRINTS HELP
 		if (aux == "help") {
 			printHelp();
-		}
-		if (index1 == index1 && index1 != "0" && index2 != "0") {
-			combineElements(std::stoi(index1), std::stoi(index2));
 		}
 };
 
@@ -200,10 +214,10 @@ void main() {
 	char lineas[300];
 	leerArchivo(lineas);
 	printHelp();
-	//printElementos();
+	printElementos();
 	
-	//do {
+	do {
 		leerInputJugador();
 		printElementos();
-	//} while (true);
+	} while (true);
 };
