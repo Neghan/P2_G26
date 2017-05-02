@@ -188,7 +188,7 @@ void sortElements() {
 //ELIMINA ELEMENTOS REPETIDOS 
 void cleanRepeatedElements() {
 	std::set<std::string>myMap;
-	for (auto it = elementos.begin(); it != elementos.end() - 1; ++it) {
+	for (auto it = elementos.begin(); it != elementos.end(); ++it) {
 			myMap.insert(*it);
 	}
 
@@ -210,7 +210,8 @@ void leerInputJugador() {
 		
 		//COMBINE ELEMENTS
 		if (std::atoi(aux.c_str())!=0) {
-			if (std::atoi(index1.c_str()) <= elementos.size() && std::atoi(index2.c_str()) <= elementos.size()) {
+			if (std::atoi(index1.c_str()) <= elementos.size() && std::atoi(index2.c_str()) <= elementos.size() &&
+				std::atoi(index1.c_str()) != std::atoi(index2.c_str())) {
 				combineElements(std::atoi(index1.c_str()), std::atoi(index2.c_str()));
 			}
 			else {
