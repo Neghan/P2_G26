@@ -260,8 +260,6 @@ void main() {
 		leerArchivo(lineas);
 		printHelp();
 		printElementos();
-		leerInputJugador();
-	
 	do {
 		controlAdd = false;
 		controlCombine = false;
