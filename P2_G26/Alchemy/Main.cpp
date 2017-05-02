@@ -98,6 +98,70 @@ void printHelp() {
 	std::cout << std::endl;
 };
 
+//LEE EL INPUT DEL JUGADOR
+void leerInputJugador() {
+
+	std::string aux;
+	std::getline(std::cin, aux); //Tomamos el input del jugador.
+
+	auto index1 = aux.substr(0, aux.find_first_of(" "));
+	auto index2 = aux.substr(aux.find_first_of(" ") + 1, aux.find("\n")); //Ej: index1 = "add" , index2= "1". 
+
+
+																		  //Segun el input del jugador, si se cumplen las condiciones, se llamaran a las funciones.
+
+																		  //COMBINE ELEMENTS
+	if (std::atoi(aux.c_str()) != 0 &&
+		std::atoi(index1.c_str()) <= elementos.size() &&
+		std::atoi(index2.c_str()) <= elementos.size() &&
+		std::atoi(index1.c_str()) != std::atoi(index2.c_str())) { //El input debe ser formado por dos numeros, ambos comprendidos entre el rango del vector y que sean distintos entre ellos.
+
+		combineElements(std::atoi(index1.c_str()), std::atoi(index2.c_str()));
+	}
+
+	//ADD ELEMENT
+	if (index1 == "add" && std::atoi(index2.c_str()) != 0 && std::atoi(index2.c_str()) <= elementos.size()) {//El input debe estar formado por "add" y una parte numerica comprendida entre el rango del vector.
+		addElement(std::atoi(index2.c_str()));
+	}
+
+
+	//DELETE ELEMENT
+	if (index1 == "delete" && std::atoi(index2.c_str()) != 0 && std::atoi(index2.c_str()) <= elementos.size()) {//El input debe estar formado por "delete" y una parte numerica comprendida entre el rango del vector.
+		deleteElement(std::atoi(index2.c_str()));
+	}
+
+
+	//INFO ABOUT ELEMENT
+	if (index1 == "info" && std::atoi(index2.c_str()) != 0 && std::atoi(index2.c_str()) <= elementos.size()) {//El input debe estar formado por "info" y una parte numerica comprendida entre el rango del vector.
+		info(std::atoi(index2.c_str()));
+	}
+
+
+	//ADDS BASICS
+	if (aux == "add basics") {//El input debe estar formado por "add basics".
+		addBasics();
+	}
+
+	//SORT
+	if (aux == "sort") {//El input debe estar formado por "sort".
+		sortElements();
+	}
+
+	//CLEAN
+	if (aux == "clean") {//El input debe estar formado por "clean".
+		cleanRepeatedElements();
+	}
+
+	//PRINTS HELP
+	if (aux == "help") {//El input debe estar formado por "help".
+		printHelp();
+	}
+
+	//Borra los inputs incorrectos.
+	std::cin.clear();
+	std::cin.ignore(std::cin.rdbuf()->in_avail());
+};
+
 //COMBINE ELEMENTS
 void combineElements(int myIndex1, int myIndex2) {
 	
@@ -211,72 +275,6 @@ void cleanRepeatedElements() {
 		elementos.push_back(*it);
 	}
 };
-
-//LEE EL INPUT DEL JUGADOR
-void leerInputJugador() {
-
-	std::string aux;
-	std::getline(std::cin,aux); //Tomamos el input del jugador.
-
-	auto index1 = aux.substr(0, aux.find_first_of(" "));
-	auto index2 = aux.substr(aux.find_first_of(" ") + 1, aux.find("\n")); //Ej: index1 = "add" , index2= "1". 
-		
-
-	//Segun el input del jugador, si se cumplen las condiciones, se llamaran a las funciones.
-
-		//COMBINE ELEMENTS
-		if (std::atoi(aux.c_str())!=0 && 
-			std::atoi(index1.c_str()) <= elementos.size() &&
-			std::atoi(index2.c_str()) <= elementos.size() &&
-			std::atoi(index1.c_str()) != std::atoi(index2.c_str())) { //El input debe ser formado por dos numeros, ambos comprendidos entre el rango del vector y que sean distintos entre ellos.
-
-			combineElements(std::atoi(index1.c_str()), std::atoi(index2.c_str())); 
-		}
-		
-		//ADD ELEMENT
-		if (index1 == "add" && std::atoi(index2.c_str()) != 0 && std::atoi(index2.c_str()) <= elementos.size()) {//El input debe estar formado por "add" y una parte numerica comprendida entre el rango del vector.
-			addElement(std::atoi(index2.c_str()));
-		}
-
-
-		//DELETE ELEMENT
-		if (index1 == "delete" && std::atoi(index2.c_str()) != 0 && std::atoi(index2.c_str()) <= elementos.size()) {//El input debe estar formado por "delete" y una parte numerica comprendida entre el rango del vector.
-			deleteElement(std::atoi(index2.c_str()));
-		}
-		
-
-		//INFO ABOUT ELEMENT
-		if (index1 == "info" && std::atoi(index2.c_str()) != 0 && std::atoi(index2.c_str()) <= elementos.size()) {//El input debe estar formado por "info" y una parte numerica comprendida entre el rango del vector.
-			info(std::atoi(index2.c_str()));
-		}
-		
-
-		//ADDS BASICS
-		if(aux == "add basics"){//El input debe estar formado por "add basics".
-			addBasics();
-		}
-
-		//SORT
-		if (aux == "sort") {//El input debe estar formado por "sort".
-			sortElements();
-		}
-
-		//CLEAN
-		if (aux == "clean") {//El input debe estar formado por "clean".
-			cleanRepeatedElements();
-		}
-
-		//PRINTS HELP
-		if (aux == "help") {//El input debe estar formado por "help".
-			printHelp();
-		}
-
-		//Borra los inputs incorrectos.
-		std::cin.clear();
-		std::cin.ignore(std::cin.rdbuf()->in_avail());
-};
-
-
 
 void main() {
 		char lineas[300];
