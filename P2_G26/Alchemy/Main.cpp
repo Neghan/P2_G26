@@ -139,7 +139,10 @@ void combineElements(int myIndex1, int myIndex2) {
 		}
 		elementos.push_back(value2);
 		puntuacion++;
-	}		
+	}
+	else {
+		controlCombine = true;
+	}
 };
 
 //add 1 SE COPIA ESE ELEMENTO EN LA LISTA 
