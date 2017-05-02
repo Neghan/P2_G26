@@ -129,10 +129,6 @@ void combineElements(int myIndex1, int myIndex2) {
 			puntuacion++;//Aumentamos la puntuacion.
 			combinaciones.insert(value1);
 		}
-		else{
-			combinaciones.insert(value1);
-		}
-
 	}
 	
 	else if (findKey2 != elementosFinales.end()) { //El mismo condicional que el anterior per trabajando sobre el vector que tiene la key invertida
@@ -155,9 +151,6 @@ void combineElements(int myIndex1, int myIndex2) {
 
 		if (it2 == combinaciones.end()) {
 			puntuacion++;//Aumentamos la puntuacion.
-			combinaciones.insert(value2);
-		}
-		else {
 			combinaciones.insert(value2);
 		}
 	}
