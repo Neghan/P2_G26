@@ -1,12 +1,6 @@
-#include <fstream>
-#include <string>
-#include <iostream>
-#include <windows.h>
-#include <algorithm>
-#include <cstdlib>
-#include<unordered_map>
-#include<stdlib.h>
-#include<set>
+#include "Input.h"
+#include "Lectura.h"
+#include "Print.h"
 
 //HASH
 template<>
@@ -23,6 +17,9 @@ std::unordered_map<std::pair<std::string, std::string>, std::string>elementosFin
 
 //VECTOR
 std::vector<std::string>elementos({"Air","Earth","Fire","Water"}); //En este vector se guardan los elementos que vaya creando el jugador.
+
+//SET
+std::set<std::string>combinaciones; //Guardaremos en este set combinaciones ya hechas.
 
 //SCORE
 int puntuacion = 0; //Puntuacion del jugador.
@@ -107,8 +104,6 @@ void combineElements(int myIndex1, int myIndex2) {
 	std::pair<std::string, std::string>aux1 = {elementos[myIndex1 - 1], elementos[myIndex2 - 1]}; //Declaramos un pair que contendra una posible combinacion.
 	std::pair<std::string, std::string>aux2 = { elementos[myIndex2 - 1], elementos[myIndex1 - 1]};//Este pair es por si el jugador introduce lo que seria una key invertida. "Earth Air" en vez de "Air Earth".
 
-	std::set<std::string>combinaciones;
-
 	auto findKey1 = elementosFinales.find(aux1); //Miramos si el pair que se ha entrado coincide con la key de nuestro map que contiene los elementos.
 	auto findKey2 = elementosFinales.find(aux2);
 
@@ -126,8 +121,18 @@ void combineElements(int myIndex1, int myIndex2) {
 		}
 		successCombining = true;//Combinacion valida.
 		elementos.push_back(value1);//El nuevo elemento se inserta al final del vector.
-		combinaciones.insert(value1);
-		puntuacion++;//Aumentamos la puntuacion.
+
+		auto it1 = combinaciones.find(value1);
+		
+
+		if (it1 == combinaciones.end()) {
+			puntuacion++;//Aumentamos la puntuacion.
+			combinaciones.insert(value1);
+		}
+		else{
+			combinaciones.insert(value1);
+		}
+
 	}
 	
 	else if (findKey2 != elementosFinales.end()) { //El mismo condicional que el anterior per trabajando sobre el vector que tiene la key invertida
@@ -144,8 +149,17 @@ void combineElements(int myIndex1, int myIndex2) {
 		}
 		successCombining = true;
 		elementos.push_back(value2);
-		combinaciones.insert(value2);
-		puntuacion++;
+
+		auto it2 = combinaciones.find(value2);
+		
+
+		if (it2 == combinaciones.end()) {
+			puntuacion++;//Aumentamos la puntuacion.
+			combinaciones.insert(value2);
+		}
+		else {
+			combinaciones.insert(value2);
+		}
 	}
 	else{
 		errorCombining = true;  //Combinacion no valida.
@@ -279,6 +293,7 @@ void main() {
 
 	do {//mantendremos la lectura del input de usuario y el printeo de elementos y puntuacion mientras la puntuacion no sea la maxima;
 		errorCombining = false;
+		successCombining = false;
 		leerInputJugador();
 		system("cls");
 		printElementos();
