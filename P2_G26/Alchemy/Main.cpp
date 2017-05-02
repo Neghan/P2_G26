@@ -140,7 +140,7 @@ void combineElements(int myIndex1, int myIndex2) {
 		elementos.push_back(value2);
 		puntuacion++;
 	}
-	else if (findKey1 == elementosFinales.end() && findKey2 == elementosFinales.end()){
+	else if (findKey1 == elementosFinales.end() && findKey2 == elementosFinales.end() && myIndex1 > elementos.size() && myIndex2 > elementos.size()){
 		controlCombine = true;
 	}		
 };
