@@ -26,9 +26,9 @@ std::vector<std::string>elementos({"Air","Earth","Fire","Water"});
 //SCORE
 int puntuacion = 0;
 int puntuacionMaxima = 395;
-//error combining
-bool errorCombining = true;
-
+//COMBINE
+bool errorCombining = false;
+bool successCombining = false;
 //GUARDA COMO VALUE EL ELEMENTO RESULTANTE DE LA SUMA DE DOS ELEMENTOS
 std::string GuardarValue(std::string l) {
 	l = l.substr(0, l.find_first_of(" "));
@@ -69,6 +69,7 @@ void leerArchivo(char lineas[]) {
 //PRINTEAR ELEMENTOS 
 void printElementos() {
 	if (errorCombining == true) { std::cout << "Combination Failure, try again!" << std::endl; }
+	if (successCombining == true) { std::cout << "New element found: " << elementos[elementos.size() - 1]<< std::endl; }
 	std::cout << "Your current score: " << puntuacion << std::endl;
 	std::cout << "You have these elements: " << std::endl;
 	for (int i = 0; i < elementos.size(); ++i)
@@ -113,7 +114,7 @@ void combineElements(int myIndex1, int myIndex2) {
 			elementos.erase(elementos.begin() + myIndex2 - 1);
 			elementos.erase(elementos.begin() + myIndex1 - 1);
 		}
-
+		successCombining = true;
 		elementos.push_back(value1);
 		combinaciones.insert(value1);
 		puntuacion++;
@@ -131,6 +132,7 @@ void combineElements(int myIndex1, int myIndex2) {
 			elementos.erase(elementos.begin() + myIndex2 - 1);
 			elementos.erase(elementos.begin() + myIndex1 - 1);
 		}
+		successCombining = true;
 		elementos.push_back(value2);
 		combinaciones.insert(value2);
 		puntuacion++;
