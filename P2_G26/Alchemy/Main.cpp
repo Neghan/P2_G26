@@ -26,8 +26,8 @@ std::vector<std::string>elementos({"Air","Earth","Fire","Water"});
 //SCORE
 int puntuacion = 0;
 int puntuacionMaxima = 395;
-//PRINT 
-bool controlCombine = false;
+//error combining
+bool errorCombining = true;
 
 //GUARDA COMO VALUE EL ELEMENTO RESULTANTE DE LA SUMA DE DOS ELEMENTOS
 std::string GuardarValue(std::string l) {
@@ -68,9 +68,7 @@ void leerArchivo(char lineas[]) {
 
 //PRINTEAR ELEMENTOS 
 void printElementos() {
-	if (controlCombine == true) {
-		std::cout << "Combination failure, try again!" << std::endl;
-	}
+	if (errorCombining == true) { std::cout << "Combination Failure, try again!" << std::endl; }
 	std::cout << "Your current score: " << puntuacion << std::endl;
 	std::cout << "You have these elements: " << std::endl;
 	for (int i = 0; i < elementos.size(); ++i)
@@ -138,7 +136,7 @@ void combineElements(int myIndex1, int myIndex2) {
 		puntuacion++;
 	}
 	else{
-		controlCombine = true;
+		errorCombining = true;  
 	}		
 };
 
@@ -263,7 +261,7 @@ void main() {
 		printHelp();
 		printElementos();
 	do {
-		controlCombine = false;
+		errorCombining = false;
 		leerInputJugador();
 		system("cls");
 		printElementos();
