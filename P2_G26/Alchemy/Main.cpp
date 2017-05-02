@@ -29,6 +29,8 @@ int puntuacion = 0;
 //CONTROL PRINTS
 bool controlAdd = false;
 bool controlCombine = false;
+bool controlDelete = false;
+
 
 //GUARDA COMO VALUE EL ELEMENTO RESULTANTE DE LA SUMA DE DOS ELEMENTOS
 std::string GuardarValue(std::string l) {
@@ -69,13 +71,15 @@ void leerArchivo(char lineas[]) {
 
 //PRINTEAR ELEMENTOS 
 void printElementos() {
-	if (controlAdd == true) {
-		std::cout << "You don't have this element!" << std::endl;
-	}
 	if (controlCombine == true) {
 		std::cout << "Combination failure, try again!" << std::endl;
 	}
-
+	if (controlAdd == true) {
+		std::cout << "You don't have this element!" << std::endl;
+	}
+	if (controlDelete == true) {
+		std::cout << "You don't have this element!" << std::endl;
+	}
 
 	std::cout << "Your current score: " << puntuacion << std::endl;
 	std::cout << "You have these elements: " << std::endl;
@@ -140,7 +144,7 @@ void combineElements(int myIndex1, int myIndex2) {
 		elementos.push_back(value2);
 		puntuacion++;
 	}
-	else if (findKey1 == elementosFinales.end() && findKey2 == elementosFinales.end() && myIndex1 > elementos.size() && myIndex2 > elementos.size()){
+	else{
 		controlCombine = true;
 	}		
 };
@@ -153,7 +157,6 @@ void addElement(int index) {
 	else {
 		controlAdd = true;
 	}
-	
 };
 
 //AÑADE LOS 4 PRIMEROS ELEMENTOS
@@ -167,7 +170,12 @@ void addBasics() {
 
 //ELIMINA ELEMENTO SELECCIONADO
 void deleteElement(int myIndex) {
-	elementos.erase(elementos.begin() + myIndex - 1);
+	if (myIndex <= elementos.size() && myIndex != 0) {
+		elementos.erase(elementos.begin() + myIndex - 1);
+	}
+	else {
+		controlDelete = true;
+	}
 };
 
 //ABRE WIKIPEDIA SOBRE ELEMENTO SELECCIONADO
@@ -188,7 +196,7 @@ void sortElements() {
 //ELIMINA ELEMENTOS REPETIDOS 
 void cleanRepeatedElements() {
 	std::set<std::string>myMap;
-	for (auto it = elementos.begin(); it != elementos.end() - 1; ++it) {
+	for (auto it = elementos.begin(); it != elementos.end(); ++it) {
 			myMap.insert(*it);
 	}
 
@@ -209,8 +217,15 @@ void leerInputJugador() {
 	auto index2 = aux.substr(aux.find_first_of(" ") + 1, aux.find("\n"));
 		
 		//COMBINE ELEMENTS
-		if (std::atoi(aux.c_str())!=0) {
+		if (std::atoi(aux.c_str())!=0 && 
+			std::atoi(index1.c_str()) <= elementos.size() &&
+			std::atoi(index2.c_str()) <= elementos.size() &&
+			std::atoi(index1.c_str()) != std::atoi(index2.c_str())) {
+
 			combineElements(std::atoi(index1.c_str()), std::atoi(index2.c_str()));
+		}
+		else {
+			controlCombine = true;
 		}
 
 		//ADD ELEMENT
@@ -218,16 +233,19 @@ void leerInputJugador() {
 			addElement(std::atoi(index2.c_str()));
 		}
 
+
 		//DELETE ELEMENT
 		if (index1 == "delete" && std::atoi(index2.c_str()) != 0) {
 			deleteElement(std::atoi(index2.c_str()));
 		}
+		
 
 		//GIVE INFO ABOUT ELEMENT
-		if (index1 == "info" && std::atoi(index2.c_str()) != 0) {
+		if (index1 == "info" && std::atoi(index2.c_str()) != 0 && std::atoi(index2.c_str()) <= elementos.size()) {
 			info(std::atoi(index2.c_str()));
 		}
-	
+		
+
 		//ADDS BASIC ELEMENTS
 		if(aux == "add basics"){
 			addBasics();
@@ -263,8 +281,9 @@ void main() {
 	do {
 		controlAdd = false;
 		controlCombine = false;
+		controlDelete = false;
 		leerInputJugador();
 		system("cls");
 		printElementos();
-	} while (true);
+	} while (puntuacion == elementosFinales.size());
 };
