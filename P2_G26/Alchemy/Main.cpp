@@ -26,6 +26,10 @@ std::vector<std::string>elementos({"Air","Earth","Fire","Water"});
 //SCORE
 int puntuacion = 0;
 
+//CONTROL PRINTS
+bool controlAdd = false;
+bool controlCombine = false;
+
 //GUARDA COMO VALUE EL ELEMENTO RESULTANTE DE LA SUMA DE DOS ELEMENTOS
 std::string GuardarValue(std::string l) {
 	l = l.substr(0, l.find_first_of(" "));
@@ -50,24 +54,29 @@ std::pair<std::string, std::string>GuardarKey(std::string l) {
 void leerArchivo(char lineas[]) {
 
 	std::ifstream fentrada("elements.dat");
-
+	
+	if (!fentrada.is_open()) {
+		std::cout << "Cannot read combination of elements from file elements.dat." << std::endl;
+		std::cout << "Check that it's placed in the same directory as Alchemy.exe!" << std::endl;
+		system("pause");
+	}
 		while (!fentrada.eof()) {
 			fentrada.getline(lineas, 300);
 			elementosFinales[GuardarKey(lineas)] = GuardarValue(lineas);
 		}
 		fentrada.close();
-	
-	/*
-	std::cout << "Cannot read combination of elements from file elements.dat." << std::endl;
-	std::cout << "Check that it's placed in the same directory as Alchemy.exe!" << std::endl;
-	system("pause");
-	*/
-		
-	
 };
 
 //PRINTEAR ELEMENTOS 
 void printElementos() {
+	if (controlAdd == true) {
+		std::cout << "You don't have this element!" << std::endl;
+	}
+	if (controlCombine == true) {
+		std::cout << "Combination failure, try again!" << std::endl;
+	}
+
+
 	std::cout << "Your current score: " << puntuacion << std::endl;
 	std::cout << "You have these elements: " << std::endl;
 	for (int i = 0; i < elementos.size(); ++i)
@@ -96,19 +105,44 @@ void printHelp() {
 //1 2 = OTRO ELEMENTO
 void combineElements(int myIndex1, int myIndex2) {
 
-	std::pair<std::string, std::string>aux= {elementos[myIndex1], elementos[myIndex2]};
-	auto t = elementosFinales.find(aux);
+	std::pair<std::string, std::string>aux1 = {elementos[myIndex1 - 1], elementos[myIndex2 - 1]};
+	std::pair<std::string, std::string>aux2 = { elementos[myIndex2 - 1], elementos[myIndex1 - 1] };
+	auto findKey1 = elementosFinales.find(aux1);
+	auto findKey2 = elementosFinales.find(aux2);
 
-	if (!(myIndex1 > elementos.size() || myIndex2 > elementos.size())) {
-		std::string value = t->second;
-		elementos.erase(elementos.begin() + myIndex1 - 1);
-		elementos.erase(elementos.begin() + myIndex2 - 1);
-		elementos.push_back(value);
+	if (findKey1 != elementosFinales.end()) {
+
+		std::string value1 = findKey1->second;
+		if (myIndex1 > myIndex2) {
+			elementos.erase(elementos.begin() + myIndex1 - 1);
+			elementos.erase(elementos.begin() + myIndex2 - 1);
+		}
+		else {
+			elementos.erase(elementos.begin() + myIndex2 - 1);
+			elementos.erase(elementos.begin() + myIndex1 - 1);
+		}
+		
+		elementos.push_back(value1);
+		puntuacion++;
+
+	}else if (findKey2 != elementosFinales.end()) {
+
+		std::string value2 = findKey2->second;
+
+		if (myIndex1 > myIndex2) {
+			elementos.erase(elementos.begin() + myIndex1 - 1);
+			elementos.erase(elementos.begin() + myIndex2 - 1);
+		}
+		else {
+			elementos.erase(elementos.begin() + myIndex2 - 1);
+			elementos.erase(elementos.begin() + myIndex1 - 1);
+		}
+		elementos.push_back(value2);
 		puntuacion++;
 	}
-	else {
-		std::cout << "Combination failure, try again" << std::endl;
-	}
+	else if (findKey1 == elementosFinales.end() && findKey2 == elementosFinales.end()){
+		controlCombine = true;
+	}		
 };
 
 //add 1 SE COPIA ESE ELEMENTO EN LA LISTA 
@@ -117,8 +151,9 @@ void addElement(int index) {
 		elementos.push_back(elementos[index - 1]);
 	}
 	else {
-		std::cout << "You don't have this element!" << std::endl;
+		controlAdd = true;
 	}
+	
 };
 
 //AÑADE LOS 4 PRIMEROS ELEMENTOS
@@ -220,15 +255,18 @@ void leerInputJugador() {
 
 
 void main() {
-	char lineas[300];
-	leerArchivo(lineas);
-	printHelp();
-	printElementos();
+		char lineas[300];
+
+		leerArchivo(lineas);
+		printHelp();
+		printElementos();
+		leerInputJugador();
 	
 	do {
+		controlAdd = false;
+		controlCombine = false;
 		leerInputJugador();
 		system("cls");
 		printElementos();
-
 	} while (true);
 };
