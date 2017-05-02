@@ -25,12 +25,9 @@ std::vector<std::string>elementos({"Air","Earth","Fire","Water"});
 
 //SCORE
 int puntuacion = 0;
-
-//CONTROL PRINTS
-bool controlAdd = false;
+int puntuacionMaxima = 395;
+//PRINT 
 bool controlCombine = false;
-bool controlDelete = false;
-
 
 //GUARDA COMO VALUE EL ELEMENTO RESULTANTE DE LA SUMA DE DOS ELEMENTOS
 std::string GuardarValue(std::string l) {
@@ -74,13 +71,6 @@ void printElementos() {
 	if (controlCombine == true) {
 		std::cout << "Combination failure, try again!" << std::endl;
 	}
-	if (controlAdd == true) {
-		std::cout << "You don't have this element!" << std::endl;
-	}
-	if (controlDelete == true) {
-		std::cout << "You don't have this element!" << std::endl;
-	}
-
 	std::cout << "Your current score: " << puntuacion << std::endl;
 	std::cout << "You have these elements: " << std::endl;
 	for (int i = 0; i < elementos.size(); ++i)
@@ -108,7 +98,7 @@ void printHelp() {
 
 //1 2 = OTRO ELEMENTO
 void combineElements(int myIndex1, int myIndex2) {
-
+	std::set<std::string>combinaciones;
 	std::pair<std::string, std::string>aux1 = {elementos[myIndex1 - 1], elementos[myIndex2 - 1]};
 	std::pair<std::string, std::string>aux2 = { elementos[myIndex2 - 1], elementos[myIndex1 - 1] };
 	auto findKey1 = elementosFinales.find(aux1);
@@ -125,11 +115,13 @@ void combineElements(int myIndex1, int myIndex2) {
 			elementos.erase(elementos.begin() + myIndex2 - 1);
 			elementos.erase(elementos.begin() + myIndex1 - 1);
 		}
-		
-		elementos.push_back(value1);
-		puntuacion++;
 
-	}else if (findKey2 != elementosFinales.end()) {
+		elementos.push_back(value1);
+		combinaciones.insert(value1);
+		puntuacion++;
+	}
+	
+	else if (findKey2 != elementosFinales.end()) {
 
 		std::string value2 = findKey2->second;
 
@@ -142,6 +134,7 @@ void combineElements(int myIndex1, int myIndex2) {
 			elementos.erase(elementos.begin() + myIndex1 - 1);
 		}
 		elementos.push_back(value2);
+		combinaciones.insert(value2);
 		puntuacion++;
 	}
 	else{
@@ -153,9 +146,6 @@ void combineElements(int myIndex1, int myIndex2) {
 void addElement(int index) {
 	if (index <= elementos.size() && index != 0) {
 		elementos.push_back(elementos[index - 1]);
-	}
-	else {
-		controlAdd = true;
 	}
 };
 
@@ -172,9 +162,6 @@ void addBasics() {
 void deleteElement(int myIndex) {
 	if (myIndex <= elementos.size() && myIndex != 0) {
 		elementos.erase(elementos.begin() + myIndex - 1);
-	}
-	else {
-		controlDelete = true;
 	}
 };
 
@@ -224,18 +211,15 @@ void leerInputJugador() {
 
 			combineElements(std::atoi(index1.c_str()), std::atoi(index2.c_str()));
 		}
-		else {
-			controlCombine = true;
-		}
-
+		
 		//ADD ELEMENT
-		if (index1 == "add" && std::atoi(index2.c_str()) != 0) {
+		if (index1 == "add" && std::atoi(index2.c_str()) != 0 && std::atoi(index2.c_str()) <= elementos.size()) {
 			addElement(std::atoi(index2.c_str()));
 		}
 
 
 		//DELETE ELEMENT
-		if (index1 == "delete" && std::atoi(index2.c_str()) != 0) {
+		if (index1 == "delete" && std::atoi(index2.c_str()) != 0 && std::atoi(index2.c_str()) <= elementos.size()) {
 			deleteElement(std::atoi(index2.c_str()));
 		}
 		
@@ -279,11 +263,9 @@ void main() {
 		printHelp();
 		printElementos();
 	do {
-		controlAdd = false;
 		controlCombine = false;
-		controlDelete = false;
 		leerInputJugador();
 		system("cls");
 		printElementos();
-	} while (puntuacion == elementosFinales.size());
+	} while (puntuacion < puntuacionMaxima);
 };
