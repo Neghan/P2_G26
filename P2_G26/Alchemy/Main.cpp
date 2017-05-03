@@ -108,9 +108,8 @@ void leerInputJugador() {
 	auto index2 = aux.substr(aux.find_first_of(" ") + 1, aux.find("\n")); //Ej: index1 = "add" , index2= "1". 
 
 
-																		  //Segun el input del jugador, si se cumplen las condiciones, se llamaran a las funciones.
-
-																		  //COMBINE ELEMENTS
+	//Segun el input del jugador, si se cumplen las condiciones, se llamaran a las funciones.
+	//COMBINE ELEMENTS
 	if (std::atoi(aux.c_str()) != 0 &&
 		std::atoi(index1.c_str()) <= elementos.size() &&
 		std::atoi(index2.c_str()) <= elementos.size() &&
